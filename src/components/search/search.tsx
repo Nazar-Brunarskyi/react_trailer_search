@@ -7,7 +7,7 @@ import {
   memo,
 } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
-import { getMovies } from '../API/getData';
+import { getMovies } from '../../API/getData';
 import { debounce } from 'lodash';
 import LoadingButton from '@mui/lab/LoadingButton';
 
