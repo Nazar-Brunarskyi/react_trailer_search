@@ -1,3 +1,6 @@
+# preview
+[DEMO LINK](https://nazar-brunarskyi.github.io/react_trailer_search) 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
