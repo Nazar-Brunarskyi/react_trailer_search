@@ -1,6 +1,6 @@
 import { Movie } from "./Movie";
 
-export interface Response {
+export interface MovieResponse {
   page: number,
   results: Movie[],
   total_pages: number,

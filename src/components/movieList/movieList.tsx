@@ -42,6 +42,8 @@ export const MovieList: FC = memo(
 
     const movieToRender = fillAnArray(movies);
 
+    console.log(movieToRender);
+
     return (
       <Grid
         container
