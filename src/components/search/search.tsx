@@ -38,12 +38,19 @@ export const Search: FC = memo(
         })
     }
 
+    const debouncedGetOptions = useCallback(debounce(getOptions, 300), []);
+
     useEffect(() => {
       debouncedGetOptions(value)
     }, [value])
 
+    useEffect(() => {
+      setValue(query);
+    },[query])
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      debouncedGetOptions('');
 
       searchParams.set('query', value);
       setOptions([]);
@@ -60,8 +67,6 @@ export const Search: FC = memo(
         setSearchParams(searchParams);
       }
     };
-
-    const debouncedGetOptions = useCallback(debounce(getOptions, 300), []);
 
     return (
       <form

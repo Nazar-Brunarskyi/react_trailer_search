@@ -47,7 +47,7 @@ export const MovieList: FC = memo(
         container
         rowSpacing={3}
         columns={11}
-        sx={{ justifyContent: 'space-around' }}
+        sx={{ justifyContent: 'space-around', marginBottom: 20 }}
       >
 
         {isLoading && <CircularProgress />}

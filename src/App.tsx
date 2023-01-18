@@ -2,14 +2,18 @@ import './App.scss';
 import { Search } from './components/search/search';
 import Container from '@mui/material/Container';
 import { MovieList } from './components/movieList/movieList';
+import { Header } from './components/header/header';
 
-function App() {  
+function App() {
   return (
-    <Container maxWidth="lg" >
-      <Search />
+    <>
+      <Header />
+      <Container maxWidth="lg" >
+        <Search />
 
-      <MovieList />
-    </Container >
+        <MovieList />
+      </Container >
+    </>
   );
 }
 
