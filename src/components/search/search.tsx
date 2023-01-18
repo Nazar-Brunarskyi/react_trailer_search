@@ -6,30 +6,29 @@ import {
   useEffect,
   memo,
 } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Autocomplete, TextField } from '@mui/material';
 import { getMovies } from '../../API/getData';
 import { debounce } from 'lodash';
 import LoadingButton from '@mui/lab/LoadingButton';
-
 import SearchIcon from '@mui/icons-material/Search';
 
 export const Search: FC = memo(
   () => {
-    const [value, setValue] = useState('');
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const query = searchParams.get('query') || '';
+
+    const [value, setValue] = useState(query);
     const [options, setOptions] = useState<string[]>([]);
-  
+
     const getOptions = (query: string) => {
-      const preparedQuery = query
-        .split(' ')
-        .filter(Boolean)
-        .join(' ')
-        .replaceAll(' ', '%20')
-  
-      if (preparedQuery === '') {
+      if (query.trim() === '') {
+        setOptions([]);
         return;
       }
-  
-      getMovies(preparedQuery)
+
+      getMovies(query)
         .then(movies => {
           const movieTitles = movies.map(movie => movie.original_title)
           const uniqueMovieTitles = new Set(movieTitles);
@@ -38,23 +37,47 @@ export const Search: FC = memo(
           );
         })
     }
-  
-    const debouncedGetOptions = useCallback(debounce(getOptions, 300), []);
-  
+
     useEffect(() => {
       debouncedGetOptions(value)
     }, [value])
-  
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      searchParams.set('query', value);
+      setOptions([]);
+
+      setSearchParams(searchParams);
+    }
+
+    const handleChoiceOfOption = (event: any, newValue: string | null) => {
+      if (newValue) {
+        setValue(newValue);
+
+        searchParams.set('query', newValue);
+
+        setSearchParams(searchParams);
+      }
+    };
+
+    const debouncedGetOptions = useCallback(debounce(getOptions, 300), []);
+
     return (
-      <form style={{
-        display: 'flex'
-      }}>
+      <form
+        style={{
+          display: 'flex'
+        }}
+        onSubmit={handleSubmit}
+      >
         <Autocomplete
           disablePortal
           value={value}
           id="combo-box-demo"
           getOptionLabel={(option) => (option ? `${option}` : '')}
           options={options}
+          onChange={handleChoiceOfOption}
+          freeSolo
           sx={{ width: '90%', margin: '50px auto', display: 'flex' }}
           renderInput={(params) => (
             <>
@@ -62,9 +85,9 @@ export const Search: FC = memo(
                 onChange={(e) => setValue(e.currentTarget.value)}
                 onBlur={() => setOptions([])}
                 {...params}
-                label="Enter movie name"
+                label="Enter movie"
               />
-  
+
               <LoadingButton
                 endIcon={<SearchIcon />}
                 loading={false}
@@ -72,14 +95,12 @@ export const Search: FC = memo(
                 variant="contained"
                 type="submit"
                 sx={{ margin: '0 20px' }}
-              >
-                <span>Search</span>
-              </LoadingButton>
+              />
             </>
           )}
         />
       </form>
-  
+
     );
-  },  
+  },
 );

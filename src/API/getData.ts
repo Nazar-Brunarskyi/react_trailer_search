@@ -16,7 +16,14 @@ export function getMoviesData(query: string): Promise<Response> {
 }
 
 export function getMovies(query: string) {
-  return getMoviesData(query)
+  const preparedQuery = query
+    .split(' ')
+    .filter(Boolean)
+    .join(' ')
+    .replaceAll(' ', '%20')
+    .trim();
+
+  return getMoviesData(preparedQuery)
     .then(data => (
       data.results
     ))
