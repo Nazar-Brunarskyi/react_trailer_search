@@ -2,7 +2,7 @@ import { FC, memo } from 'react';
 
 const stiles = {
   position: 'absolute' as 'absolute',
-  top: '50%',
+  top: '60%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   borderRadius: 4,
@@ -18,7 +18,7 @@ export const TrailerVideo: FC<Props> = memo(
       <iframe
         style={stiles}
         width="95%"
-        height="95%"
+        height="75%"
         src={`https://www.youtube.com/embed/${videoKey}`}
         title="YouTube video player"
         frameBorder="0"

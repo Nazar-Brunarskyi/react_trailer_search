@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router-dom';
 import { TrailerModal } from './components/trailerModal/trailerModal';
 
 function App() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const trailer = searchParams.get('trailer');
 
