@@ -46,13 +46,18 @@ export const Search: FC = memo(
 
     useEffect(() => {
       setValue(query);
-    },[query])
+    }, [query])
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => { 
       event.preventDefault();
       debouncedGetOptions('');
 
-      searchParams.set('query', value);
+      if (value === '') {
+        searchParams.delete('query')
+      } else {
+        searchParams.set('query', value);
+      }
+
       setOptions([]);
 
       setSearchParams(searchParams);

@@ -15,10 +15,10 @@ export const Header: FC = () => {
           {/* <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
             <MenuIcon />
           </IconButton> */}
-          <Link to="/" style={{color: 'white', textDecoration: 'none'}}>
-          <Typography variant="h6" color="inherit" component="div">
-            Home
-          </Typography>
+          <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
+            <Typography variant="h5" color="inherit" component="div">
+              TrailerSearch
+            </Typography>
           </Link>
         </Toolbar>
       </AppBar>

@@ -2,10 +2,8 @@ import { MovieResponse } from "../types/responseType";
 import { Trailer, TrailerResponse } from "../types/trailerObject";
 import { URL_FOR_SEARCH } from "./API_VARIABLES";
 
-export function getMoviesData(query: string): Promise<MovieResponse> {
-  return fetch(
-    URL_FOR_SEARCH + query,
-  )
+export function getData<T>(url: string): Promise<T> {
+  return fetch(url)
     .then(response => {
       if (!response.ok) {
         throw new Error('something went wrong, try later!')
@@ -24,26 +22,18 @@ export function getMovies(query: string) {
     .replaceAll(' ', '%20')
     .trim();
 
-  return getMoviesData(preparedQuery)
+  return getData<MovieResponse>(URL_FOR_SEARCH + preparedQuery)
     .then(data => (
       data.results
     ))
 }
 
-export function getTrailers(movieId: number): Promise<TrailerResponse> {
-  return fetch(
-    `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=4218253ea3996b68858664a469ad2ba1&language=en-US`,
-  ).then((response) => {
-    if (!response.ok) {
-      throw new Error('something went wrong, try later!')
-    }
+export function getTrailersArr(movieId: number): Promise<Trailer[]> {
+  const url = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=4218253ea3996b68858664a469ad2ba1&language=en-US`;
 
-    return response.json();
-  })
-  .catch(error => alert(error.message))
-}
-
-export function getTrailersArr (movieId: number): Promise<Trailer[]> {
-  return getTrailers(movieId)
-    .then(response => response.results);
+  return getData<TrailerResponse>(url)
+    .then(response => response.results)
+    .then(trailersFromServer => (
+      trailersFromServer.filter(video => video.type === 'Teaser' || video.type === 'Trailer')
+    ));
 }
