@@ -11,7 +11,7 @@ export function getData<T>(url: string): Promise<T> {
 
       return response.json();
     })
-    .catch(error => alert(error.message))
+    .catch(error => alert(error.message));
 }
 
 export function getMovies(query: string) {
@@ -28,7 +28,7 @@ export function getMovies(query: string) {
     ))
 }
 
-export function getTrailersArr(movieId: number): Promise<Trailer[]> {
+export function getTrailersArr(movieId: number) {
   const url = `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=4218253ea3996b68858664a469ad2ba1&language=en-US`;
 
   return getData<TrailerResponse>(url)
@@ -36,4 +36,11 @@ export function getTrailersArr(movieId: number): Promise<Trailer[]> {
     .then(trailersFromServer => (
       trailersFromServer.filter(video => video.type === 'Teaser' || video.type === 'Trailer')
     ));
+}
+
+export function getTheMostWatched () {
+  const url = 'https://api.themoviedb.org/3/discover/movie?api_key=4218253ea3996b68858664a469ad2ba1';
+
+  return getData<MovieResponse>(url)
+    .then(response => response.results);
 }

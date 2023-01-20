@@ -5,19 +5,21 @@ import { MovieList } from './components/movieList/movieList';
 import { Header } from './components/header/header';
 import { useSearchParams } from 'react-router-dom';
 import { TrailerModal } from './components/trailerModal/trailerModal';
+import { useState } from 'react';
 
 function App() {
+  const [homeClick, setHomeClick] = useState(0);
   const [searchParams] = useSearchParams();
 
   const trailer = searchParams.get('trailer');
 
   return (
     <>
-      <Header />
+      <Header onHomeClick={setHomeClick}/>
       <Container maxWidth="lg" >
         <Search />
 
-        <MovieList />
+        <MovieList shouldUpdate={homeClick} />
 
         {trailer && <TrailerModal />}
       </Container >

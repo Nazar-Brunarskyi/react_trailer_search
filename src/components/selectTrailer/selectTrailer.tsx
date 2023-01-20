@@ -5,36 +5,33 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { Trailer } from '../../types/trailerObject';
+import { useSearchParams } from 'react-router-dom';
 
 interface Props {
   trailers: Trailer[],
-  selectedTrailerKey: string,
-  onSelect: React.Dispatch<React.SetStateAction<string>>,
 }
 
-export const SelectTrailer: FC<Props> = memo(
+export const SelectTrailers: FC<Props> = memo(
   ({
     trailers,
-    selectedTrailerKey,
-    onSelect,
   }) => {
-    const selectedTrailer = useMemo(() => (
-      trailers.find(({key}) => selectedTrailerKey === key)
-    ),[selectedTrailerKey, trailers])
+    const [searchParams, setSearchParams] = useSearchParams();
+    const selectedTrailerKey = searchParams.get('trailerKey');
 
     const handleChange = (event: SelectChangeEvent) => {
-      onSelect(event.target.value as string);
+      searchParams.set('trailerKey', event.target.value as string)
+      setSearchParams(searchParams)
     };
 
     return (
       <Box sx={{ minWidth: '100%' }}>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">{selectedTrailer?.name}</InputLabel>
+          <InputLabel id="demo-simple-select-label">Trailers</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={selectedTrailer?.key}
-            label={selectedTrailer?.name}
+            value={selectedTrailerKey || 'there are no trailers'}
+            label="Trailers"
             onChange={handleChange}
           >
             {
@@ -47,6 +44,12 @@ export const SelectTrailer: FC<Props> = memo(
                 </MenuItem>
               ))
             }
+
+            {trailers.length === 0 && (
+              <MenuItem value="there are no trailers" >
+                there are no trailers
+              </MenuItem>
+            )}
           </Select>
         </FormControl>
       </Box>

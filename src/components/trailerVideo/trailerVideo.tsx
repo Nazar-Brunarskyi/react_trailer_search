@@ -1,4 +1,5 @@
 import { FC, memo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const stiles = {
   position: 'absolute' as 'absolute',
@@ -8,18 +9,17 @@ const stiles = {
   borderRadius: 4,
 };
 
-interface Props {
-  videoKey: string,
-}
-
-export const TrailerVideo: FC<Props> = memo(
-  ({ videoKey }) => {
+export const TrailerVideo: FC = memo(
+  () => {
+    const [searchParams] = useSearchParams();
+    const trailerKey = searchParams.get('trailerKey') || '_XRnENg_QI0';
+    
     return (
       <iframe
         style={stiles}
         width="95%"
         height="75%"
-        src={`https://www.youtube.com/embed/${videoKey}`}
+        src={`https://www.youtube.com/embed/${trailerKey}`}
         title="YouTube video player"
         frameBorder="0"
         allowFullScreen

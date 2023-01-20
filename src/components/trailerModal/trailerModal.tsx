@@ -13,7 +13,7 @@ import { useSearchParams } from 'react-router-dom';
 import { getTrailersArr } from '../../API/getData';
 import { Trailer } from '../../types/trailerObject';
 import { TrailerVideo } from '../trailerVideo/trailerVideo';
-import { SelectTrailer } from '../selectTrailer/selectTrailer';
+import { SelectTrailers } from '../selectTrailer/selectTrailer';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const center = {
@@ -39,19 +39,21 @@ const stylesForBox = {
 
 export const TrailerModal: FC = memo(
   () => {
-    const [searchParams, setSearchParams] = useSearchParams();
     const [trailers, setTrailers] = useState<Trailer[]>([]);
     const [areTrailersLoaded, setAreTrailersLoaded] = useState(false);
-    const [selectedTrailer, setSelectedTrailer] = useState('')
 
+    const [searchParams, setSearchParams] = useSearchParams();
     const movieId = searchParams.get('trailer') || 0;
+    const selectedTrailerKey = searchParams.get('trailerKey');
+
 
     useEffect(() => {
       getTrailersArr(+movieId)
         .then(trailersFromServer => {
           setTrailers(trailersFromServer)
-          if (trailersFromServer[0]) {
-            setSelectedTrailer(trailersFromServer[0].key)
+          if (!selectedTrailerKey && (trailersFromServer.length > 0)) {
+            searchParams.set('trailerKey', trailersFromServer[0].key)
+            setSearchParams(searchParams)
           }
           setAreTrailersLoaded(true);
         })
@@ -59,12 +61,9 @@ export const TrailerModal: FC = memo(
 
     const handleClose = () => {
       searchParams.delete('trailer')
-
+      searchParams.delete('trailerKey')
       setSearchParams(searchParams);
-    };
-
-    // console.log(trailers);
-    
+    };    
 
     return (
       <div>
@@ -75,14 +74,12 @@ export const TrailerModal: FC = memo(
           aria-describedby="modal-modal-description"
         >
           <Box sx={stylesForBox}>
-            <SelectTrailer
+            <SelectTrailers
               trailers={trailers}
-              selectedTrailerKey={selectedTrailer}
-              onSelect={setSelectedTrailer}
             />
 
             { !areTrailersLoaded && <CircularProgress sx={center} />}
-            { areTrailersLoaded && <TrailerVideo videoKey={selectedTrailer} />}
+            { areTrailersLoaded && <TrailerVideo />}
           </Box>
         </Modal>
       </div>
