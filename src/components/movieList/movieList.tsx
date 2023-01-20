@@ -12,6 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Movie } from '../../types/Movie';
 import { getMovies, getTheMostWatched } from '../../API/getData';
 import { fillAnArray } from './helpers';
+import Alert from '@mui/material/Alert';
 
 interface Props {
   shouldUpdate: number;
@@ -53,48 +54,51 @@ export const MovieList: FC<Props> = memo(
     const lengthOfList = useMemo(() => moviesToRender.length, [moviesToRender])
 
     return (
-      <>
-        <Grid
-          container
-          rowSpacing={3}
-          columns={11}
-          sx={{ justifyContent: 'space-around', marginBottom: 20 }}
-        >
-          {isLoading && <CircularProgress />}
+      <Grid
+        container
+        rowSpacing={3}
+        columns={11}
+        sx={{ justifyContent: 'space-around', marginBottom: 20 }}
+      >
+        {isLoading && <CircularProgress />}
 
-          {
-            !isLoading && lengthOfList !== 0 && moviesToRender.map((movie, index) => {
-              return movie === null
-                ? (
-                  <Grid
-                    key={index}
-                    item
-                    xs={11}
-                    sm={5}
-                    md={3}
-                  />
-                )
-                : (
-                  <Grid
-                    key={movie.id}
-                    item
-                    xs={11}
-                    sm={5}
-                    md={3}
-                  >
-                    <MovieCard movie={movie} />
-                  </Grid>
-                )
-            })
-          }
+        {
+          !isLoading && lengthOfList !== 0 && moviesToRender.map((movie, index) => {
+            return movie === null
+              ? (
+                <Grid
+                  key={index}
+                  item
+                  xs={11}
+                  sm={5}
+                  md={3}
+                />
+              )
+              : (
+                <Grid
+                  key={movie.id}
+                  item
+                  xs={11}
+                  sm={5}
+                  md={3}
+                >
+                  <MovieCard movie={movie} />
+                </Grid>
+              )
+          })
+        }
 
-          {
-            !isLoading && lengthOfList === 0 && (
-              <h2>there isn't such movie or you did mistake while typing</h2>
-            )
-          }
-        </Grid>
-      </>
+        {
+          !isLoading && lengthOfList === 0 && (
+            <Alert
+              severity="info"
+              sx={{width: '90%'}}
+            >
+              there isn't such movie or you did mistake while typing
+            </Alert>
+          )
+        }
+      </Grid>
     );
   },
 );

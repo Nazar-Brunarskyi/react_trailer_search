@@ -88,7 +88,7 @@ export const Search: FC = memo(
           options={options}
           onChange={handleChoiceOfOption}
           freeSolo
-          sx={{ width: '90%', margin: '50px auto', display: 'flex' }}
+          sx={{ width: '70%', margin: '50px auto', display: 'flex' }}
           renderInput={(params) => (
             <>
               <TextField

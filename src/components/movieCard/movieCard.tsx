@@ -4,9 +4,8 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { CardActionArea } from '@mui/material';
 import { Movie } from '../../types/Movie';
-import { getTrailersArr } from '../../API/getData';
 import { Link, useSearchParams } from 'react-router-dom';
 
 interface Props {
@@ -21,7 +20,8 @@ export const MovieCard: FC<Props> = memo(
       poster_path,
       original_title,
     } = movie;
-    const [searchParams, setSearchParams] = useSearchParams();
+    
+    const [searchParams] = useSearchParams();
 
     const getSearchParamsForTrailer = (id: number) => {
       searchParams.set('trailer', `${id}`)
