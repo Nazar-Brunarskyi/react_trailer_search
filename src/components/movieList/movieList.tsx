@@ -104,7 +104,7 @@ export const MovieList: FC<Props> = memo(
                 severity="info"
                 sx={{ width: '90%' }}
               >
-                there isn't such movie or you did mistake while typing
+                there isn't such movie or you made mistake while typing
               </Alert>
             )
           }
